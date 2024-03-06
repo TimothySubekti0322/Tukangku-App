@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Tukangku",
-    "slug": "Tukangku",
+    "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/favicon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
