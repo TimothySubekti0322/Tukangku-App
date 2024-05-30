@@ -5,11 +5,15 @@ import {
   Image,
   Pressable,
   TextInput,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { Link, Stack, router } from "expo-router";
 import AUTH_IMAGES from "../../static/images/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios, { AxiosError } from "axios";
+import BASE_URL from "../../static/API";
+import { ActivityIndicator } from "react-native-paper";
 
 const intialFormState = {
   email: "",
@@ -27,10 +31,43 @@ const Login = () => {
     setFormState({ ...formState, [key]: value });
   };
 
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
   const handleLogin = async () => {
-    console.log(formState);
-    await AsyncStorage.setItem("tokenTukangKu", "token");
-    router.replace("../main");
+    setLoading(true);
+    setEmailError("");
+    setPasswordError("");
+    try {
+      const response = await axios.post(`${BASE_URL}/auth/login`, formState);
+      console.log(response.data.message);
+      if (response.data.status === 200) {
+        await AsyncStorage.setItem("tokenTukangKu", response.data.token);
+        await AsyncStorage.setItem("nameTukangKu", response.data.payload.name);
+        await AsyncStorage.setItem(
+          "emailTukangKu",
+          response.data.payload.email
+        );
+        router.replace({
+          pathname: "/main/home",
+        });
+      } else if (response.data.message == "Password is required") {
+        console.log("Masuk sini");
+        setPasswordError("Password is required");
+      } else if (response.data.message == "Email is required") {
+        setEmailError("Email is required");
+      } else if (response.data.message == "User not found") {
+        setEmailError("Email is not registered");
+      } else if (response.data.message == "Wrong Password") {
+        setPasswordError("Wrong Password");
+      }
+    } catch (error: any | AxiosError) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -51,33 +88,42 @@ const Login = () => {
 
         {/* Body */}
         <View className="items-center w-full">
-          <Text className="font-InterBold text-3xl">Log In</Text>
+          <Text className="text-3xl font-InterBold">Log In</Text>
 
           {/* Email */}
-          <View className="w-4/5 relative mt-12">
+          <View className="relative w-4/5 mt-12">
             <TextInput
-              className="rounded-full border-[1px] border-[#4D4D4D] py-3 pl-14 pb-4"
+              className={`${
+                emailError !== "" ? "border-red-500" : "border-[#4D4D4D]"
+              } rounded-full border-[1px]  py-3 pl-14 pb-4`}
               placeholder="Username / Email"
               onChangeText={(text) => handleChange("email", text)}
             />
             <Image
               source={AUTH_IMAGES.username}
-              className="w-7 h-7 absolute top-3 left-4"
+              className="absolute w-7 h-7 top-3 left-4"
               style={{ resizeMode: "contain" }}
             />
+            {emailError !== "" && (
+              <Text className="self-start mt-1 ml-2 text-red-500">
+                {emailError}
+              </Text>
+            )}
           </View>
 
           {/* Password */}
-          <View className="w-4/5 relative mt-8">
+          <View className="relative w-4/5 mt-8">
             <TextInput
-              className="rounded-full border-[1px] border-[#4D4D4D] py-3 pl-14 pb-4"
+              className={`${
+                passwordError !== "" ? "border-red-500" : "border-[#4D4D4D]"
+              } rounded-full border-[1px] py-3 pl-14 pb-4`}
               placeholder="Password"
               secureTextEntry={!passwordVisible}
               onChangeText={(text) => handleChange("password", text)}
             />
             <Image
               source={AUTH_IMAGES.password}
-              className="w-7 h-7 absolute top-3 left-4"
+              className="absolute w-7 h-7 top-3 left-4"
               style={{ resizeMode: "contain" }}
             />
             <Pressable
@@ -98,6 +144,9 @@ const Login = () => {
                 />
               )}
             </Pressable>
+            {passwordError !== "" && (
+              <Text className="mt-1 ml-2 text-red-500">{passwordError}</Text>
+            )}
             <View className="flex-row items-center justify-center w-full mt-4 mb-8">
               <Text>Don't have an account? </Text>
               <Link href="../register">
@@ -112,12 +161,16 @@ const Login = () => {
         {/* Login Button */}
         <View className="w-4/5 bg-[#EFB526] rounded-full overflow-hidden">
           <Pressable
-            className="py-3 justify-center items-center"
+            className="items-center justify-center py-3"
             android_ripple={{ color: "#CD9304" }}
             android_disableSound={true}
             onPress={() => handleLogin()}
           >
-            <Text className="text-white text-lg font-InterBold">Log In</Text>
+            {loading ? (
+              <ActivityIndicator animating={true} />
+            ) : (
+              <Text className="text-lg text-white font-InterBold">Log In</Text>
+            )}
           </Pressable>
         </View>
       </View>

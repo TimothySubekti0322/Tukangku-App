@@ -12,6 +12,7 @@ const HOME_IMAGES = {
   plumbing: require("../../assets/images/home/plumbing.png"),
   repairing: require("../../assets/images/home/repairing.png"),
   search: require("../../assets/images/home/search.png"),
+  goldSearch: require("../../assets/images/home/gold-search.png"),
   shifting: require("../../assets/images/home/shifting.png"),
   star: require("../../assets/images/home/star.png"),
   toiletPlumbing: require("../../assets/images/home/toilet-plumbing.png"),

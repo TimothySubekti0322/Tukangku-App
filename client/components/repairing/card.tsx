@@ -1,14 +1,14 @@
 import { View, Text, Pressable, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import REPAIRING_IMAGES from "../../static/images/repairing";
 import {
   formatCurrency,
   formatIntegerToRegularNumber,
 } from "../../utils/numberFormat";
 import { router } from "expo-router";
+import { OrderServiceContext } from "../../store/context/orderServiceContext";
 
 interface CardProps {
-  image: any;
   name: string;
   title: string;
   price: number;
@@ -16,20 +16,44 @@ interface CardProps {
   reviews: number;
 }
 
-const Card: React.FC<CardProps> = ({
-  image,
-  name,
-  title,
-  price,
-  rating,
-  reviews,
-}) => {
+const selectImage = (name: string) => {
+  switch (name) {
+    case "Cameron William":
+      return REPAIRING_IMAGES.cameronWilliam;
+      break;
+    case "Alfonzo Sander":
+      return REPAIRING_IMAGES.alfonzoSander;
+      break;
+    case "Benny Bromo":
+      return REPAIRING_IMAGES.bennyBromo;
+      break;
+    case "Daniel Kylee":
+      return REPAIRING_IMAGES.danielKylee;
+      break;
+    case "Kevin Merrill":
+      return REPAIRING_IMAGES.kevinMerrill;
+      break;
+    case "Pedro Huard":
+      return REPAIRING_IMAGES.pedroHuard;
+      break;
+    case "Edgar Torrey":
+      return REPAIRING_IMAGES.edgarTorrey;
+      break;
+    case "Christian Evvy":
+      return REPAIRING_IMAGES.christianEvvy;
+      break;
+  }
+};
+
+const Card: React.FC<CardProps> = ({ name, title, price, rating, reviews }) => {
+  const orderServiceCtx = useContext(OrderServiceContext);
   const pressHandler = () => {
-    if (name == "Cameron William" && title == "Appliances Services") {
-      router.push("../booking");
-    } else {
-      router.push("../comingSoon");
-    }
+    orderServiceCtx.setService(title);
+    orderServiceCtx.setWorker(name);
+    orderServiceCtx.setBasePrice(price);
+    orderServiceCtx.setRating(rating);
+    orderServiceCtx.setReviews(reviews);
+    router.push("/booking");
   };
   return (
     <Pressable
@@ -37,7 +61,7 @@ const Card: React.FC<CardProps> = ({
       onPress={() => pressHandler()}
     >
       <Image
-        source={image}
+        source={selectImage(name)}
         className="w-24 h-24 rounded 2xl"
         style={{ resizeMode: "contain" }}
       />

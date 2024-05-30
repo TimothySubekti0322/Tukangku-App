@@ -30,13 +30,17 @@ const BookingDate = () => {
   const handleWorkingHours = (type: string) => {
     if (type === "plus") {
       if (formData.workingHours >= 2) {
-        orderServiceCtx.setPrice(orderServiceCtx.price + 100000);
+        orderServiceCtx.setPrice(
+          orderServiceCtx.price + orderServiceCtx.basePrice
+        );
       }
       setFormData((prev) => ({ ...prev, workingHours: prev.workingHours + 1 }));
     } else {
       if (formData.workingHours > 1) {
         if (formData.workingHours > 2) {
-          orderServiceCtx.setPrice(orderServiceCtx.price - 100000);
+          orderServiceCtx.setPrice(
+            orderServiceCtx.price - orderServiceCtx.basePrice
+          );
         }
         setFormData((prev) => ({
           ...prev,
@@ -95,10 +99,15 @@ const BookingDate = () => {
           {/* Promo Code */}
           <Text className="mt-36 font-InterMedium">Promo Code (optional)</Text>
           <TextInput
-            className="bg-[#F5F5F5] rounded-xl py-3 px-3 mt-4"
+            className={`${
+              formData.promoCode === "promo" && "border-[1px] border-green-500"
+            } bg-[#F5F5F5] rounded-xl py-3 px-3 mt-4`}
             placeholder="Enter promo code"
             onChangeText={(text) => handlePromoCode(text)}
           />
+          {formData.promoCode === "promo" && (
+            <Text className="mt-1 text-green-500">Promo Applied </Text>
+          )}
 
           {/* Button Submit */}
           <View className="mt-6 mb-8">
@@ -110,6 +119,7 @@ const BookingDate = () => {
                 true
               )}`}
               onPress={handleSubmit}
+              loading={false}
             />
           </View>
         </ScrollView>

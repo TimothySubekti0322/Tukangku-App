@@ -6,7 +6,7 @@ import BOOKING_IMAGES from "../../../static/images/booking";
 const ModalConfirmationContent = () => {
   const handleSubmit = () => {
     router.replace({
-      pathname: "/main",
+      pathname: "/main/home",
       params: { screen: "booking" },
     });
   };

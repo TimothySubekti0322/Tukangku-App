@@ -99,7 +99,11 @@ const ConfirmPayment = () => {
           </Text>
           <AccordionVA bank={bank} />
           <View className="mt-16 mb-8">
-            <SubmitButton title="Confirm Payment" onPress={handleSubmit} />
+            <SubmitButton
+              title="Confirm Payment"
+              onPress={handleSubmit}
+              loading={false}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -4,12 +4,10 @@ import { Stack } from "expo-router";
 
 const BookingLayout = () => {
   return (
-    <OrderServiceContextProvider>
-      <>
-        <Stack.Screen options={{ headerShown: false }} />
-        <Stack />
-      </>
-    </OrderServiceContextProvider>
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+      <Stack />
+    </>
   );
 };
 

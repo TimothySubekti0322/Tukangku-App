@@ -15,6 +15,36 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ReadMore from "@fawazahmed/react-native-read-more";
 import RatingReviewsCard from "../../../components/booking/mainSection/ratingReviewsCard";
 import { OrderServiceContext } from "../../../store/context/orderServiceContext";
+import { formatCurrency } from "../../../utils/numberFormat";
+
+const selectImage = (name: string) => {
+  switch (name) {
+    case "Cameron William":
+      return BOOKING_IMAGES.cameronWilliam;
+      break;
+    case "Alfonzo Sander":
+      return BOOKING_IMAGES.alfonzoSander;
+      break;
+    case "Benny Bromo":
+      return BOOKING_IMAGES.bennyBromo;
+      break;
+    case "Daniel Kylee":
+      return BOOKING_IMAGES.danielKylee;
+      break;
+    case "Kevin Merrill":
+      return BOOKING_IMAGES.kevinMerrill;
+      break;
+    case "Pedro Huard":
+      return BOOKING_IMAGES.pedroHuard;
+      break;
+    case "Edgar Torrey":
+      return BOOKING_IMAGES.edgarTorrey;
+      break;
+    case "Christian Evvy":
+      return BOOKING_IMAGES.christianEvvy;
+      break;
+  }
+};
 
 const Booking = () => {
   const orderServiceCtx = useContext(OrderServiceContext);
@@ -26,11 +56,7 @@ const Booking = () => {
   const width = Dimensions.get("window").width;
 
   const handleBookNow = () => {
-    orderServiceCtx.setService("Appliance Services");
-    orderServiceCtx.setCategory("Repairing");
-    orderServiceCtx.setWorker("Cameron William");
-
-    router.push("./applianceService");
+    router.push("booking/applianceService");
   };
 
   return (
@@ -40,7 +66,7 @@ const Booking = () => {
       <ScrollView>
         {/* Main Image */}
         <Image
-          source={BOOKING_IMAGES.mainPicture}
+          source={selectImage(orderServiceCtx.worker)}
           className="w-full h-80"
           style={{ resizeMode: "contain", marginTop: -inset.top }}
         />
@@ -56,23 +82,25 @@ const Booking = () => {
         {/* Main Body */}
         <View className="px-6">
           <View className="flex-row items-center justify-between">
-            <Text className="text-xl font-InterBold">Appliance Services</Text>
+            <Text className="text-xl font-InterBold">
+              {orderServiceCtx.service}
+            </Text>
             <Image source={BOOKING_IMAGES.bookmark} className="w-7 h-7" />
           </View>
 
           <View className="flex-row items-center mt-2">
             <Text className="text-[#EFB526] font-InterBold text-[15px]">
-              Cameron William
+              {orderServiceCtx.worker}
             </Text>
             <Image
               source={BOOKING_IMAGES.starHalfGold}
               className="w-4 h-4 ml-2"
             />
             <Text className="text-[#7F7F7F] ml-1 text-xs font-InterSemiBold">
-              4.8
+              {orderServiceCtx.rating}
             </Text>
             <Text className="text-[#7F7F7F] ml-1 text-xs font-InterSemiBold">
-              (8.992 reviews)
+              ({orderServiceCtx.reviews} reviews)
             </Text>
           </View>
 
@@ -88,7 +116,7 @@ const Booking = () => {
 
           <View className="flex-row items-center w-full border-b-2 border-[#C2C2C2] mt-3 pb-4">
             <Text className="text-[#EFB526] font-InterBold text-xl">
-              Rp 400.000
+              {formatCurrency(orderServiceCtx.basePrice, "Rp", false, true)}
             </Text>
             <Text className="font-InterSemiBold text-[#7F7F7F] ml-3">
               (Floor Price)

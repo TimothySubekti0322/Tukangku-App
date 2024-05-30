@@ -35,10 +35,16 @@ interface OrderServiceContextProps {
   setNote: (note: string) => void;
   paymentMethod: string;
   setPaymentMethod: (paymentMethod: string) => void;
+  basePrice: number;
+  setBasePrice: (basePrice: number) => void;
   price: number;
   setPrice: (price: number) => void;
   status: Status;
   setStatus: (status: Status) => void;
+  rating: number;
+  setRating: (rating: number) => void;
+  reviews: number;
+  setReviews: (reviews: number) => void;
 }
 
 const defaultValues: OrderServiceContextProps = {
@@ -74,10 +80,16 @@ const defaultValues: OrderServiceContextProps = {
   setNote: () => {},
   paymentMethod: "",
   setPaymentMethod: () => {},
+  basePrice: 0,
+  setBasePrice: () => {},
   price: 0,
   setPrice: () => {},
   status: "Upcoming",
   setStatus: () => {},
+  rating: 0,
+  setRating: () => {},
+  reviews: 0,
+  setReviews: () => {},
 };
 
 export const OrderServiceContext =
@@ -102,8 +114,11 @@ const OrderServiceContextProvider: React.FC<{ children: ReactNode }> = ({
   const [postCode, setPostCode] = useState<string>("");
   const [note, setNote] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
+  const [basePrice, setBasePrice] = useState<number>(0);
   const [price, setPrice] = useState<number>(0);
   const [status, setStatus] = useState<Status>("Upcoming");
+  const [rating, setRating] = useState<number>(0);
+  const [reviews, setReviews] = useState<number>(0);
 
   const value = {
     applianceService,
@@ -138,10 +153,16 @@ const OrderServiceContextProvider: React.FC<{ children: ReactNode }> = ({
     setNote,
     paymentMethod,
     setPaymentMethod,
+    basePrice,
+    setBasePrice,
     price,
     setPrice,
     status,
     setStatus,
+    rating,
+    setRating,
+    reviews,
+    setReviews,
   };
 
   return (

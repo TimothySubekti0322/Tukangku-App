@@ -1,17 +1,20 @@
 import React from "react";
 import { Text, Pressable, View } from "react-native";
 import Modal from "react-native-modal";
+import { ActivityIndicator } from "react-native-paper";
 
 interface BottomDrawerProps {
   isVisible: boolean;
   onClose: () => void;
   onCancelBooking: () => void;
+  loading: boolean;
 }
 
 const BottomDrawer: React.FC<BottomDrawerProps> = ({
   isVisible,
   onClose,
   onCancelBooking,
+  loading,
 }) => {
   return (
     <Modal
@@ -49,9 +52,13 @@ const BottomDrawer: React.FC<BottomDrawerProps> = ({
             className="flex-1 p-3 ml-2 bg-yellow-500 rounded-full"
             onPress={onCancelBooking}
           >
-            <Text className="text-center text-white font-InterSemiBold">
-              Yes, Cancel Booking
-            </Text>
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text className="text-center text-white font-InterSemiBold">
+                Yes, Cancel Booking
+              </Text>
+            )}
           </Pressable>
         </View>
       </View>

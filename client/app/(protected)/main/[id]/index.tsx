@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
-import Navbar from "../../../components/navbar/navbar";
+import Navbar from "../../../../components/navbar/navbar";
 import Home from "./home";
 import Bookings from "./bookings";
 import Messages from "./messages";
 import Profile from "./profile";
 
 const Main = () => {
-  const { screen = "home" } = useLocalSearchParams();
-  const [activeScreen, setActiveScreen] = useState<string>(screen as string);
-  useEffect(() => {
-    setActiveScreen(screen as string);
-  }, [screen]);
+  const { id = "home" } = useLocalSearchParams<{ id: string }>();
+  const [activeScreen, setActiveScreen] = useState<string>(id);
 
   return (
     <>

@@ -1,9 +1,13 @@
 import { Text, View, Pressable, Image } from "react-native";
 import React from "react";
-import COMINGSOON_IMAGE from "../../../static/images/comingSoon";
-import { Stack, router } from "expo-router";
+import COMINGSOON_IMAGE from "../../../../static/images/comingSoon";
+import { Stack, router, useLocalSearchParams } from "expo-router";
 
 const ComingSoon = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  console.log(id);
+  const route = "../../main/" + id;
+  console.log(route);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -28,7 +32,7 @@ const ComingSoon = () => {
             className="bg-[#EFB526] items-center justify-center py-4"
             android_disableSound={true}
             android_ripple={{ color: "#CD9304" }}
-            onPress={() => router.back()}
+            onPress={() => router.push(route)}
           >
             <Text className="text-lg text-white font-InterSemiBold">
               Go Back

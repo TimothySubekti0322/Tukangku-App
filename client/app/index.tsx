@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OnBoarding from "./onboarding";
 import Login from "./login";
-import Main from "./(protected)/main";
+import Main from "./(protected)/main/[id]";
 
 const Root = () => {
   const [hasToken, setHasToken] = useState<boolean>(false);

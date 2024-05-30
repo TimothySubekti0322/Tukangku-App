@@ -42,7 +42,7 @@ const OnBoarding = () => {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <View className="w-full flex-1 bg-white">
+      <View className="flex-1 w-full bg-white">
         <FlatList
           data={slide}
           renderItem={({ item }) => (
@@ -73,7 +73,7 @@ const OnBoarding = () => {
         {currentIndex == 3 ? (
           <GetStartedButton onPress={getStartedHandler} />
         ) : (
-          <View className="flex-row justify-center items-center pb-16 w-full relative">
+          <View className="relative flex-row items-center justify-center w-full pb-16">
             <Paginator
               data={slide}
               scrollX={scrollX}

@@ -1,75 +1,86 @@
-import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import { View, Text, ScrollView, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
 import HeaderBackTitle from "../../../components/headerBackTitle/headerBackTitle";
 import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "../../../components/repairing/card";
-import REPAIRING_IMAGES from "../../../static/images/repairing";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import BASE_URL from "../../../static/API";
+import axios from "axios";
+import { ActivityIndicator } from "react-native-paper";
+
+interface Services {
+  id: string;
+  service: string;
+  price: number;
+  review: number;
+  rating: number;
+  worker: string;
+}
 
 const Repair = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const token = await AsyncStorage.getItem("tokenTukangKu");
+        const response = await axios.get(`${BASE_URL}/service`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setData(response.data.data);
+      } catch (error: any) {
+        Alert.alert("Error", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView className="flex-1 bg-[#F0F0F0]">
         <ScrollView
           className="flex-1"
-          contentContainerStyle={{ paddingHorizontal: 26 }}
+          contentContainerStyle={{
+            paddingHorizontal: 26,
+            flex: loading ? 1 : 0,
+          }}
         >
           <View className="w-full mt-8">
             <HeaderBackTitle title="Repairing" />
           </View>
 
           {/* Card */}
-          <View className="w-full mt-6">
-            <Card
-              image={REPAIRING_IMAGES.service1}
-              name="Cameron William"
-              title="Appliances Services"
-              price={400000}
-              rating={4.8}
-              reviews={8992}
-            />
-            <Card
-              image={REPAIRING_IMAGES.service2}
-              name="Raymond Chenall"
-              title="Appliances Services"
-              price={470000}
-              rating={4.6}
-              reviews={6182}
-            />
-            <Card
-              image={REPAIRING_IMAGES.service3}
-              name="Daryl Nehls"
-              title="Walls Repairing"
-              price={310000}
-              rating={4.9}
-              reviews={7938}
-            />
-            <Card
-              image={REPAIRING_IMAGES.service4}
-              name="Theresa Webb"
-              title="Kitchen Appliances"
-              price={280000}
-              rating={4.8}
-              reviews={8132}
-            />
-            <Card
-              image={REPAIRING_IMAGES.service5}
-              name="Elmer Evans"
-              title="Machine Repairing"
-              price={350000}
-              rating={4.9}
-              reviews={7204}
-            />
-            <Card
-              image={REPAIRING_IMAGES.service6}
-              name="Axel Mitchell"
-              title="Appliances Services"
-              price={430000}
-              rating={4.8}
-              reviews={8132}
-            />
-          </View>
+          {loading ? (
+            <View className="items-center justify-center flex-1">
+              <ActivityIndicator
+                size="large"
+                color="#EFB526"
+                animating={true}
+              />
+            </View>
+          ) : (
+            <View className="w-full mt-6">
+              {data.map((item: Services) => (
+                <Card
+                  key={item.id}
+                  name={item.worker}
+                  title={item.service}
+                  price={item.price}
+                  rating={item.rating}
+                  reviews={item.review}
+                />
+              ))}
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
     </>

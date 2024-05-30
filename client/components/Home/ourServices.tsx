@@ -5,11 +5,11 @@ import { router } from "expo-router";
 
 const OurServices = () => {
   const goToRepair = () => {
-    router.push("../repair");
+    router.push("/repair");
   };
 
   const goToComingSoon = () => {
-    router.push("../comingSoon");
+    router.push("/comingSoon/home");
   };
   return (
     <>

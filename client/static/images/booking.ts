@@ -30,6 +30,14 @@ const BOOKING_IMAGES = {
   starHalfGold: require("../../assets/images/booking/star-half-gold.png"),
   starFillWhite: require("../../assets/images/booking/star-fill-white.png"),
   success: require("../../assets/images/booking/success.png"),
+  cameronWilliam: require("../../assets/images/booking/cameron-william.png"),
+  alfonzoSander: require("../../assets/images/booking/alfonzo-sander.png"),
+  bennyBromo: require("../../assets/images/booking/benny-bromo.png"),
+  danielKylee: require("../../assets/images/booking/daniel-kylee.png"),
+  kevinMerrill: require("../../assets/images/booking/kevin-merrill.png"),
+  pedroHuard: require("../../assets/images/booking/pedro-huard.png"),
+  edgarTorrey: require("../../assets/images/booking/edgar-torrey.png"),
+  christianEvvy: require("../../assets/images/booking/christian-evvy.png"),
 };
 
 export default BOOKING_IMAGES;
