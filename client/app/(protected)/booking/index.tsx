@@ -56,6 +56,7 @@ const Booking = () => {
   const width = Dimensions.get("window").width;
 
   const handleBookNow = () => {
+    orderServiceCtx.setCategory("repair");
     router.push("booking/applianceService");
   };
 
